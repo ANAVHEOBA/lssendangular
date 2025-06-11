@@ -1,0 +1,145 @@
+.hero {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: #FFFFFF;
+  color: #2A028E;
+
+  .hero-content {
+    max-width: 1200px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero-header {
+    margin-bottom: 3rem;
+
+    h1 {
+      font-size: 4rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      color: #2A028E;
+    }
+
+    .subtitle {
+      font-size: 1.5rem;
+      color: #5A31AA;
+    }
+  }
+
+  .price-card {
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(42, 2, 142, 0.1);
+    border: 1px solid rgba(42, 2, 142, 0.1);
+
+    .price-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .price-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .label {
+        font-size: 1rem;
+        color: #5A31AA;
+        font-weight: 500;
+      }
+
+      .value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2A028E;
+      }
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(42, 2, 142, 0.1);
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .label {
+        font-size: 0.9rem;
+        color: #5A31AA;
+        font-weight: 500;
+      }
+
+      .value {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2A028E;
+
+        &.positive {
+          color: #BB435E;
+        }
+
+        &.negative {
+          color: #5A31AA;
+        }
+      }
+    }
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+
+    .btn {
+      padding: 1rem 2.5rem;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+
+      &.primary {
+        background: #2A028E;
+        color: #FFFFFF;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(42, 2, 142, 0.2);
+          background: #32015E;
+        }
+      }
+
+      &.secondary {
+        background: #FFFFFF;
+        color: #2A028E;
+        border: 2px solid #2A028E;
+
+        &:hover {
+          background: rgba(42, 2, 142, 0.05);
+        }
+      }
+    }
+  }
+
+  .loading, .error {
+    font-size: 1.2rem;
+    color: #5A31AA;
+  }
+
+  .error {
+    color: #BB435E;
+  }
+}

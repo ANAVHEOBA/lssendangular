@@ -1,0 +1,19 @@
+<section class="features-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Why Trade With Us?</h2>
+      <p>We provide a secure, reliable, and user-friendly platform for all your crypto trading needs.</p>
+    </div>
+    <div class="features-grid">
+      @for(feature of features; track feature.title) {
+        <div class="feature-card">
+          <div class="feature-icon">
+            <mat-icon class="icon">{{ feature.icon }}</mat-icon>
+          </div>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>

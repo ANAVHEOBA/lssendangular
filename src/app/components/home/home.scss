@@ -1,0 +1,24 @@
+.home-section {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2A028E 0%, #5A31AA 100%);
+  padding: 2rem;
+  color: #ffffff;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+  }
+}

@@ -1,0 +1,48 @@
+<section class="market-overview">
+  <div class="container">
+    <h2>Market Overview</h2>
+    <div class="table-container">
+      @if (loading) {
+        <p class="loading-state">Loading market data...</p>
+      } @else if (error) {
+        <p class="error-state">{{ error }}</p>
+      } @else {
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Asset</th>
+              <th>Price</th>
+              <th>24h %</th>
+              <th>Market Cap</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for(crypto of topCryptos; track crypto.id) {
+              <tr>
+                <td>{{ crypto.market_cap_rank }}</td>
+                <td>
+                  <div class="asset">
+                    <img [src]="crypto.image" [alt]="crypto.name" class="asset-logo">
+                    <div class="asset-name">
+                      <span class="name">{{ crypto.name }}</span>
+                      <span class="symbol">{{ crypto.symbol.toUpperCase() }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ crypto.current_price | currency:'USD' }}</td>
+                <td>
+                  <span [class.positive]="crypto.price_change_percentage_24h > 0"
+                        [class.negative]="crypto.price_change_percentage_24h < 0">
+                    {{ crypto.price_change_percentage_24h > 0 ? '+' : '' }}{{ crypto.price_change_percentage_24h | number:'1.2-2' }}%
+                  </span>
+                </td>
+                <td>{{ crypto.market_cap | currency:'USD':'symbol':'1.0-0' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,61 @@
+<section class="login-section">
+  <div class="login-container">
+    <div class="login-header">
+      <h1>Welcome Back!</h1>
+      <p>Log in to access your trading dashboard</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      @if (error) {
+        <div class="error-message">
+          {{ error }}
+        </div>
+      }
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email" 
+          placeholder="Enter your email"
+          [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+        >
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+          <span class="error-text">Please enter a valid email address</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password" 
+          placeholder="Enter your password"
+          [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+        >
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <span class="error-text">Password is required</span>
+        }
+      </div>
+
+      <button 
+        type="submit" 
+        class="submit-button" 
+        [disabled]="loginForm.invalid || loading"
+      >
+        @if (loading) {
+          <span class="loading-spinner"></span>
+          Logging In...
+        } @else {
+          Log In
+        }
+      </button>
+
+      <div class="register-link">
+        Don't have an account? <a routerLink="/register">Sign up</a>
+      </div>
+    </form>
+  </div>
+</section>

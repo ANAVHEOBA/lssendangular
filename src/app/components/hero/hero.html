@@ -1,0 +1,61 @@
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-header">
+      <h1>Lisk</h1>
+      <p class="subtitle">Trade Lisk with confidence</p>
+    </div>
+
+    @if (loading) {
+      <div class="loading">
+        <span>Loading market data...</span>
+      </div>
+    } @else if (error) {
+      <div class="error">
+        <span>{{ error }}</span>
+      </div>
+    } @else if (cryptoData) {
+      <div class="price-card">
+        <div class="price-row">
+          <div class="price-item">
+            <span class="label">USD</span>
+            <span class="value">${{ cryptoData.usd | number:'1.4-4' }}</span>
+          </div>
+          <div class="price-item">
+            <span class="label">EUR</span>
+            <span class="value">€{{ cryptoData.eur | number:'1.4-4' }}</span>
+          </div>
+          <div class="price-item">
+            <span class="label">GBP</span>
+            <span class="value">£{{ cryptoData.gbp | number:'1.4-4' }}</span>
+          </div>
+          <div class="price-item">
+            <span class="label">NGN</span>
+            <span class="value">₦{{ cryptoData.ngn | number:'1.2-2' }}</span>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-item">
+            <span class="label">24h Change</span>
+            <span class="value" [class.positive]="cryptoData.usd_24h_change > 0" [class.negative]="cryptoData.usd_24h_change < 0">
+              {{ cryptoData.usd_24h_change > 0 ? '+' : '' }}{{ cryptoData.usd_24h_change | number:'1.2-2' }}%
+            </span>
+          </div>
+          <div class="stat-item">
+            <span class="label">Market Cap</span>
+            <span class="value">${{ cryptoData.usd_market_cap | number:'1.0-0' }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="label">24h Volume</span>
+            <span class="value">${{ cryptoData.usd_24h_vol | number:'1.0-0' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-buttons">
+        <button class="btn primary" (click)="startTrading()">Start Trading</button>
+        <button class="btn secondary">Learn More</button>
+      </div>
+    }
+  </div>
+</section>
