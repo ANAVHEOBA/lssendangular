@@ -1,0 +1,126 @@
+<div class="trade-section">
+  <div class="trade-header">
+    <h1>Buy Lisk</h1>
+    <p class="subtitle">Enter the amount of Lisk you want to buy and your Lisk address</p>
+  </div>
+
+  @if (loading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Processing your transaction...</p>
+    </div>
+  } @else if (error) {
+    <div class="error-state">
+      <i class="fas fa-exclamation-circle"></i>
+      <p>{{ error }}</p>
+    </div>
+  } @else if (transactionResponse) {
+    <div class="transaction-details">
+      <div class="success-message">
+        <i class="fas fa-check-circle"></i>
+        <h2>Transaction Created Successfully</h2>
+      </div>
+
+      <div class="details-card">
+        <h3>Transaction Details</h3>
+        <div class="detail-row">
+          <span>Transaction ID:</span>
+          <span>{{ transactionResponse.data.transaction._id }}</span>
+        </div>
+        <div class="detail-row">
+          <span>Status:</span>
+          <span class="status-badge">{{ transactionResponse.data.transaction.status }}</span>
+        </div>
+        <div class="detail-row">
+          <span>Payment Reference:</span>
+          <span>{{ transactionResponse.data.transaction.paymentReference }}</span>
+        </div>
+        <div class="detail-row">
+          <span>Payment Deadline:</span>
+          <span>{{ transactionResponse.data.transaction.paymentDeadline | date:'medium' }}</span>
+        </div>
+      </div>
+
+      <div class="payment-card">
+        <h3>Payment Instructions</h3>
+        <div class="bank-details">
+          <div class="detail-row">
+            <span>Amount to Pay:</span>
+            <span class="amount">₦{{ transactionResponse.data.paymentInstructions.amount | number:'1.2-2' }}</span>
+          </div>
+          <div class="detail-row">
+            <span>Bank Name:</span>
+            <span>{{ transactionResponse.data.paymentInstructions.bankDetails.bankName }}</span>
+          </div>
+          <div class="detail-row">
+            <span>Account Name:</span>
+            <span>{{ transactionResponse.data.paymentInstructions.bankDetails.accountName }}</span>
+          </div>
+          <div class="detail-row">
+            <span>Account Number:</span>
+            <span>{{ transactionResponse.data.paymentInstructions.bankDetails.accountNumber }}</span>
+          </div>
+          <div class="detail-row">
+            <span>Payment Reference:</span>
+            <span>{{ transactionResponse.data.paymentInstructions.reference }}</span>
+          </div>
+        </div>
+
+        <div class="instructions">
+          <h4>Important Instructions:</h4>
+          <ul>
+            @for (instruction of transactionResponse.data.paymentInstructions.instructions; track instruction) {
+              <li>{{ instruction }}</li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <form [formGroup]="buyForm" (ngSubmit)="onSubmit()" class="buy-form">
+      <div class="form-group">
+        <label for="liskAmount">Amount of Lisk to Buy</label>
+        <div class="input-group">
+          <input 
+            type="number" 
+            id="liskAmount" 
+            formControlName="liskAmount"
+            placeholder="Enter amount"
+            [class.error]="buyForm.get('liskAmount')?.invalid && buyForm.get('liskAmount')?.touched"
+          >
+          <span class="input-suffix">LSK</span>
+        </div>
+        @if (buyForm.get('liskAmount')?.invalid && buyForm.get('liskAmount')?.touched) {
+          <span class="error-text">Please enter a valid amount</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="liskAddress">Your Lisk Address</label>
+        <input 
+          type="text" 
+          id="liskAddress" 
+          formControlName="liskAddress"
+          placeholder="Enter your Lisk address"
+          [class.error]="buyForm.get('liskAddress')?.invalid && buyForm.get('liskAddress')?.touched"
+        >
+        @if (buyForm.get('liskAddress')?.invalid && buyForm.get('liskAddress')?.touched) {
+          <span class="error-text">Please enter a valid Lisk address</span>
+        }
+      </div>
+
+      <button 
+        type="submit" 
+        class="submit-button" 
+        [disabled]="buyForm.invalid || loading"
+      >
+        @if (loading) {
+          <span class="loading-spinner"></span>
+          Processing...
+        } @else {
+          Buy Lisk
+        }
+      </button>
+    </form>
+  }
+</div> 

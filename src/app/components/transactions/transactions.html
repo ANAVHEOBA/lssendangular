@@ -1,0 +1,78 @@
+<div class="transactions-container">
+  <div class="transactions-header">
+    <h1>Transaction History</h1>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading transactions...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error">
+    <i class="fas fa-exclamation-circle"></i>
+    <p>{{ error }}</p>
+    <button (click)="loadTransactions()">Try Again</button>
+  </div>
+
+  <!-- Transactions Table -->
+  <div class="transactions-content" *ngIf="!loading && !error">
+    <div class="transactions-table-container">
+      <table class="transactions-table">
+        <thead>
+          <tr>
+            <th>Transaction ID</th>
+            <th>Amount</th>
+            <th>Payment Reference</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of transactions">
+            <td>{{ transaction._id }}</td>
+            <td>{{ transaction.liskAmount }} LSK</td>
+            <td>{{ transaction.paymentReference }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(transaction.status)">
+                {{ transaction.status }}
+              </span>
+            </td>
+            <td>{{ formatDate(transaction.createdAt) }}</td>
+            <td>
+              <button class="action-button" *ngIf="transaction.status === 'pending_payment'">
+                Upload Proof
+              </button>
+              <button class="action-button view-details">
+                View Details
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="transactions.length === 0">
+      <i class="fas fa-history"></i>
+      <p>No transactions found</p>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="transactions.length > 0">
+      <button 
+        [disabled]="currentPage === 1"
+        (click)="onPageChange(currentPage - 1)">
+        Previous
+      </button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button 
+        [disabled]="currentPage === totalPages"
+        (click)="onPageChange(currentPage + 1)">
+        Next
+      </button>
+    </div>
+  </div>
+</div> 

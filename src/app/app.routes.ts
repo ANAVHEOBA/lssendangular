@@ -4,6 +4,8 @@ import { RegisterComponent } from './components/register/register';
 import { LoginComponent } from './components/login/login';
 import { DashboardLayoutComponent } from './layouts/dashboard/dashboard';
 import { DashboardComponent } from './components/dashboard/dashboard';
+import { TradeComponent } from './components/trade/trade';
+import { TransactionsComponent } from './components/transactions/transactions';
 
 export const routes: Routes = [
   // Public routes with navbar
@@ -17,7 +19,9 @@ export const routes: Routes = [
     path: 'dashboard',
     component: DashboardLayoutComponent,
     children: [
-      { path: '', component: DashboardComponent }
+      { path: '', component: DashboardComponent },
+      { path: 'trade', component: TradeComponent },
+      { path: 'transactions', component: TransactionsComponent }
       // ... other dashboard routes can be added here
     ]
   },

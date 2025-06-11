@@ -1,1 +1,117 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+  @if (loading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading your profile...</p>
+    </div>
+  } @else if (error) {
+    <div class="error-state">
+      <i class="fas fa-exclamation-circle"></i>
+      <p>{{ error }}</p>
+    </div>
+  } @else if (user) {
+    <div class="dashboard-header">
+      <div class="welcome-section">
+        <h1>Welcome back, {{ user.firstName }}!</h1>
+        <p class="subtitle">Here's an overview of your trading activity</p>
+      </div>
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="user-details">
+          <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+          <span class="user-email">{{ user.email }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-stats">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-wallet"></i>
+        </div>
+        <div class="stat-info">
+          <h3>Total Balance</h3>
+          <p class="stat-value">$0.00</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="stat-info">
+          <h3>Portfolio Value</h3>
+          <p class="stat-value">$0.00</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-exchange-alt"></i>
+        </div>
+        <div class="stat-info">
+          <h3>Active Trades</h3>
+          <p class="stat-value">0</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-chart-pie"></i>
+        </div>
+        <div class="stat-info">
+          <h3>Total Profit</h3>
+          <p class="stat-value">$0.00</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-content">
+      <div class="recent-activity">
+        <h2>Recent Activity</h2>
+        @if (transactions.length === 0) {
+          <div class="empty-state">
+            <i class="fas fa-history"></i>
+            <p>No recent activity to show</p>
+          </div>
+        } @else {
+          <div class="transactions-list">
+            @for (transaction of transactions; track transaction._id) {
+              <div class="transaction-card">
+                <div class="transaction-header">
+                  <div class="transaction-type">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Buy Lisk</span>
+                  </div>
+                  <span class="status-badge" [class]="getStatusClass(transaction.status)">
+                    {{ transaction.status.replace('_', ' ') | titlecase }}
+                  </span>
+                </div>
+                <div class="transaction-details">
+                  <div class="detail-row">
+                    <span>Amount:</span>
+                    <span class="amount">{{ transaction.liskAmount }} LSK</span>
+                  </div>
+                  <div class="detail-row">
+                    <span>Naira Amount:</span>
+                    <span class="amount">₦{{ transaction.nairaAmount | number:'1.2-2' }}</span>
+                  </div>
+                  <div class="detail-row">
+                    <span>Reference:</span>
+                    <span>{{ transaction.paymentReference }}</span>
+                  </div>
+                  <div class="detail-row">
+                    <span>Date:</span>
+                    <span>{{ formatDate(transaction.createdAt) }}</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
