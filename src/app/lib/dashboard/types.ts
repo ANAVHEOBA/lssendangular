@@ -105,6 +105,7 @@ export interface Transaction {
   updatedAt: string;
   bankDetails: BankDetails;
   fees: TransactionFees;
+  paymentProof?: string; // Optional property for payment proof URL
 }
 
 export interface BuyTransactionResponse {
@@ -141,5 +142,18 @@ export interface TransactionDetailsResponse {
   status: string;
   data: {
     transaction: Transaction;
+  };
+}
+
+export interface PaymentProof {
+  url: string;
+  uploadedAt: string;
+}
+
+export interface PaymentProofUploadResponse {
+  status: string;
+  data: {
+    transaction: Transaction;
+    paymentProof: PaymentProof;
   };
 } 

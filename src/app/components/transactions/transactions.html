@@ -45,9 +45,9 @@
               <button class="action-button" *ngIf="transaction.status === 'pending_payment'">
                 Upload Proof
               </button>
-              <button class="action-button view-details">
+              <a [routerLink]="['/dashboard/transactions', transaction._id]" class="action-button view-details">
                 View Details
-              </button>
+              </a>
             </td>
           </tr>
         </tbody>

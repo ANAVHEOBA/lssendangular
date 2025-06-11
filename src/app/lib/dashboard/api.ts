@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { isPlatformBrowser } from '@angular/common';
 import { 
   UserProfileResponse, 
   DashboardResponse, 
   BuyTransactionResponse,
   BuyTransactionRequest,
-  TransactionHistoryResponse
+  TransactionHistoryResponse,
+  TransactionDetailsResponse,
+  PaymentProofUploadResponse
 } from './types';
 
 @Injectable({
@@ -15,11 +18,20 @@ import {
 })
 export class DashboardApiService {
   private apiUrl = environment.apiUrl;
+  private isBrowser: boolean;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    let token: string | null = null;
+    if (this.isBrowser) {
+      token = localStorage.getItem('token');
+    }
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
@@ -69,6 +81,24 @@ export class DashboardApiService {
   getTransactionHistory(page: number = 1, limit: number = 10): Observable<TransactionHistoryResponse> {
     return this.http.get<TransactionHistoryResponse>(
       `${this.apiUrl}/api/transactions/my-transactions?page=${page}&limit=${limit}`,
+      { headers: this.getHeaders() }
+    );
+  }
+
+  getTransactionDetails(transactionId: string): Observable<TransactionDetailsResponse> {
+    return this.http.get<TransactionDetailsResponse>(
+      `${this.apiUrl}/api/transactions/${transactionId}`,
+      { headers: this.getHeaders() }
+    );
+  }
+
+  uploadPaymentProof(transactionId: string, file: File): Observable<PaymentProofUploadResponse> {
+    const formData = new FormData();
+    formData.append('paymentProof', file);
+
+    return this.http.post<PaymentProofUploadResponse>(
+      `${this.apiUrl}/api/transactions/${transactionId}/payment-proof`,
+      formData,
       { headers: this.getHeaders() }
     );
   }

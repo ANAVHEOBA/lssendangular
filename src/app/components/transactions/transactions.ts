@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { DashboardApiService } from '../../lib/dashboard/api';
 import { TransactionHistoryResponse, Transaction } from '../../lib/dashboard/types';
 
 @Component({
   selector: 'app-transactions',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './transactions.html',
   styleUrls: ['./transactions.scss']
 })

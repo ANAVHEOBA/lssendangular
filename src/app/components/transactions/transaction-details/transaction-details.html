@@ -1,0 +1,156 @@
+<div class="transaction-details-container">
+  <div class="transaction-details-header">
+    <button class="back-button" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i> Back to Transactions
+    </button>
+    <h1>Transaction Details</h1>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading transaction details...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error">
+    <i class="fas fa-exclamation-circle"></i>
+    <p>{{ error }}</p>
+    <button (click)="loadTransactionDetails(transaction?._id || '')">Try Again</button>
+  </div>
+
+  <!-- Transaction Details -->
+  <div class="transaction-details-content" *ngIf="!loading && !error && transaction">
+    <div class="details-card">
+      <div class="details-section">
+        <h2>Transaction Information</h2>
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="label">Transaction ID</span>
+            <span class="value">{{ transaction._id }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Status</span>
+            <span class="status-badge" [ngClass]="getStatusClass(transaction.status)">
+              {{ transaction.status }}
+            </span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Created At</span>
+            <span class="value">{{ formatDate(transaction.createdAt) }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Updated At</span>
+            <span class="value">{{ formatDate(transaction.updatedAt) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="details-section">
+        <h2>Payment Details</h2>
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="label">Lisk Amount</span>
+            <span class="value">{{ transaction.liskAmount }} LSK</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Naira Amount</span>
+            <span class="value">₦{{ transaction.nairaAmount.toFixed(2) }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Payment Reference</span>
+            <span class="value">{{ transaction.paymentReference }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Payment Deadline</span>
+            <span class="value">{{ formatDate(transaction.paymentDeadline) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="details-section">
+        <h2>Bank Details</h2>
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="label">Bank Name</span>
+            <span class="value">{{ transaction.bankDetails.bankName }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Account Name</span>
+            <span class="value">{{ transaction.bankDetails.accountName }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Account Number</span>
+            <span class="value">{{ transaction.bankDetails.accountNumber }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="details-section">
+        <h2>Fees</h2>
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="label">Percentage</span>
+            <span class="value">{{ transaction.fees.percentage }}%</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Lisk Fee</span>
+            <span class="value">{{ transaction.fees.lsk }} LSK</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Naira Fee</span>
+            <span class="value">₦{{ transaction.fees.ngn.toFixed(2) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-buttons" *ngIf="transaction.status === 'pending_payment'">
+        <div class="upload-section">
+          <div class="file-input-container">
+            <label for="paymentProof" class="file-input-label">
+              <i class="fas fa-file-upload"></i>
+              Choose File
+            </label>
+            <input 
+              id="paymentProof"
+              type="file" 
+              accept="image/*" 
+              (change)="onFileSelected($event)"
+              [disabled]="uploading"
+              class="file-input"
+            >
+            <span class="file-name" *ngIf="selectedFile">
+              {{ selectedFile.name }}
+            </span>
+          </div>
+          
+          <button 
+            class="upload-proof-button" 
+            (click)="uploadPaymentProof()"
+            [disabled]="!selectedFile || uploading"
+          >
+            <i class="fas" [ngClass]="uploading ? 'fa-spinner fa-spin' : 'fa-upload'"></i>
+            {{ uploading ? 'Uploading...' : 'Upload Payment Proof' }}
+          </button>
+        </div>
+
+        <div class="upload-error" *ngIf="uploadError">
+          <i class="fas fa-exclamation-circle"></i>
+          {{ uploadError }}
+        </div>
+      </div>
+
+      <!-- Payment Proof Section -->
+      <div class="details-section" *ngIf="transaction.paymentProof">
+        <h2>Payment Proof</h2>
+        <div class="payment-proof-container">
+          <img [src]="transaction.paymentProof" alt="Payment Proof" class="payment-proof-image">
+          <div class="payment-proof-info">
+            <span class="label">Uploaded At</span>
+            <span class="value">{{ formatDate(transaction.updatedAt) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
